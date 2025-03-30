@@ -5,6 +5,8 @@
 #include <godot_cpp/classes/character_body3d.hpp>
 #include <godot_cpp/variant/vector3.hpp>
 #include <godot_cpp/classes/input.hpp>
+#include <godot_cpp/classes/node3d.hpp>
+#include <godot_cpp/variant/basis.hpp>
 
 namespace godot
 {
@@ -15,8 +17,10 @@ namespace godot
 
     private:
         int m_nSpeed, m_nFallAcceleration;
-        Vector3 m_nVelocity, m_nPosition;
-        Input* m_pInput;
+        Vector3 m_ntargetVelocity, m_nPosition;
+        Input *m_pInput;
+        Node3D *m_pPivot;
+        Basis *m_basis;
 
     protected:
         static void _bind_methods();
@@ -25,7 +29,7 @@ namespace godot
         Player();
         ~Player();
         void _ready() override;
-        void _process(double delta) override;
+        void _physics_process(double delta) override;
         void setSpeed(const int &p_speed);
         int getSpeed() const;
         void setFallAcceleration(const int &p_fallAcceleration);
