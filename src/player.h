@@ -3,6 +3,8 @@
 
 #include <godot_cpp/godot.hpp>
 #include <godot_cpp/classes/character_body3d.hpp>
+#include <godot_cpp/variant/vector3.hpp>
+#include <godot_cpp/classes/input.hpp>
 
 namespace godot
 {
@@ -13,6 +15,8 @@ namespace godot
 
     private:
         int m_nSpeed, m_nFallAcceleration;
+        Vector3 m_nVelocity, m_nPosition;
+        Input* m_pInput;
 
     protected:
         static void _bind_methods();
@@ -24,6 +28,8 @@ namespace godot
         void _process(double delta) override;
         void setSpeed(const int &p_speed);
         int getSpeed() const;
+        void setFallAcceleration(const int &p_fallAcceleration);
+        int getFallAcceleration() const;
     };
 }
 
