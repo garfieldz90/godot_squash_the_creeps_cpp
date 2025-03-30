@@ -16,10 +16,10 @@ namespace godot
         GDCLASS(Player, CharacterBody3D)
 
     private:
-        int m_nSpeed, m_nFallAcceleration;
-        Vector3 m_ntargetVelocity, m_nPosition;
-        Input *m_pInput;
-        Node3D *m_pPivot;
+        int m_speed, m_fall_acceleration;
+        Vector3 m_target_velocity, m_position;
+        Input *m_input;
+        Node3D *m_pivot;
         Basis *m_basis;
 
     protected:
@@ -30,10 +30,10 @@ namespace godot
         ~Player();
         void _ready() override;
         void _physics_process(double delta) override;
-        void setSpeed(const int &p_speed);
-        int getSpeed() const;
-        void setFallAcceleration(const int &p_fallAcceleration);
-        int getFallAcceleration() const;
+        void set_speed(const int &p_speed);
+        int get_speed() const;
+        void set_fall_acceleration(const int &p_fall_acceleration);
+        int get_fall_acceleration() const;
     };
 }
 

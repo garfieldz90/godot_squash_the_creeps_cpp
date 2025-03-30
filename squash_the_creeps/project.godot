@@ -14,6 +14,11 @@ config/name="godot_squash_the_creeps_cpp"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="uid://wffk0tlh7ehh"
 
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=540
+
 [input]
 
 move_left={

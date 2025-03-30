@@ -5,20 +5,20 @@ using namespace godot;
 
 void Player::_bind_methods()
 {
-    ClassDB::bind_method(D_METHOD("getSpeed"), &Player::getSpeed);
-    ClassDB::bind_method(D_METHOD("setSpeed", "speed"), &Player::setSpeed);
-    ADD_PROPERTY(PropertyInfo(Variant::INT, "speed"), "setSpeed", "getSpeed");
-    ClassDB::bind_method(D_METHOD("getFallAcceleration"), &Player::getFallAcceleration);
-    ClassDB::bind_method(D_METHOD("setFallAcceleration", "fall_acceleration"), &Player::setFallAcceleration);
-    ADD_PROPERTY(PropertyInfo(Variant::INT, "FallAcceleration"), "setFallAcceleration", "getFallAcceleration");
+    ClassDB::bind_method(D_METHOD("get_speed"), &Player::get_speed);
+    ClassDB::bind_method(D_METHOD("set_speed", "speed"), &Player::set_speed);
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "speed"), "set_speed", "get_speed");
+    ClassDB::bind_method(D_METHOD("get_fall_acceleration"), &Player::get_fall_acceleration);
+    ClassDB::bind_method(D_METHOD("set_fall_acceleration", "fall_acceleration"), &Player::set_fall_acceleration);
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "fall_acceleration"), "set_fall_acceleration", "get_fall_acceleration");
 }
 
 Player::Player()
 {
-    m_nSpeed = 0;
-    m_nFallAcceleration = 0;
-    m_ntargetVelocity = Vector3(0, 0, 0);
-    m_pInput = Input::get_singleton();
+    m_speed = 0;
+    m_fall_acceleration = 0;
+    m_target_velocity = Vector3(0, 0, 0);
+    m_input = Input::get_singleton();
 }
 
 Player::~Player()
@@ -28,21 +28,21 @@ Player::~Player()
 void Player::_physics_process(double delta)
 {
     Vector3 direction = Vector3(0, 0, 0);
-    m_nPosition = get_position();
+    m_position = get_position();
 
-    if (m_pInput->is_action_pressed("move_right"))
+    if (m_input->is_action_pressed("move_right"))
     {
         direction.x += 1.0f;
     }
-    if (m_pInput->is_action_pressed("move_left"))
+    if (m_input->is_action_pressed("move_left"))
     {
         direction.x -= 1.0f;
     }
-    if (m_pInput->is_action_pressed("move_back"))
+    if (m_input->is_action_pressed("move_back"))
     {
         direction.z += 1.0f;
     }
-    if (m_pInput->is_action_pressed("move_forward"))
+    if (m_input->is_action_pressed("move_forward"))
     {
         direction.z -= 1.0f;
     }
@@ -50,42 +50,42 @@ void Player::_physics_process(double delta)
     if (direction != Vector3(0, 0, 0))
     {
         direction = direction.normalized();
-        m_pPivot->set_basis(Basis::looking_at(direction));
+        m_pivot->set_basis(Basis::looking_at(direction));
     }
 
-    m_ntargetVelocity.x = direction.x * m_nSpeed;
-    m_ntargetVelocity.z = direction.z * m_nSpeed;
+    m_target_velocity.x = direction.x * m_speed;
+    m_target_velocity.z = direction.z * m_speed;
 
     if (!is_on_floor())
     {
-        m_ntargetVelocity.y = m_ntargetVelocity.y - (m_nFallAcceleration * delta);
+        m_target_velocity.y = m_target_velocity.y - (m_fall_acceleration * delta);
     }
 
-    set_velocity(m_ntargetVelocity);
+    set_velocity(m_target_velocity);
     move_and_slide();
 }
 
 void Player::_ready()
 {
-    m_pPivot = get_node<Node3D>("Pivot");
+    m_pivot = get_node<Node3D>("Pivot");
 }
 
-void Player::setSpeed(const int &p_speed)
+void Player::set_speed(const int &p_speed)
 {
-    m_nSpeed = p_speed;
+    m_speed = p_speed;
 }
 
-int Player::getSpeed() const
+int Player::get_speed() const
 {
-    return m_nSpeed;
+    return m_speed;
 }
 
-void Player::setFallAcceleration(const int &p_fallAcceleration)
+void Player::set_fall_acceleration(const int &p_fall_acceleration)
 {
-    m_nFallAcceleration = p_fallAcceleration;
+    m_fall_acceleration = p_fall_acceleration;
 }
 
-int Player::getFallAcceleration() const
+int Player::get_fall_acceleration() const
 {
-    return m_nFallAcceleration;
+    return m_fall_acceleration;
 }
