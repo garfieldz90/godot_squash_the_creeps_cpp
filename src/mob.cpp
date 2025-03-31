@@ -12,6 +12,8 @@ void Mob::_bind_methods()
     ClassDB::bind_method(D_METHOD("set_max_speed", "max_speed"), &Mob::set_max_speed);
     ClassDB::bind_method(D_METHOD("get_max_speed"), &Mob::get_max_speed);
     ADD_PROPERTY(PropertyInfo(Variant::INT, "max_speed"), "set_max_speed", "get_max_speed");
+    ClassDB::bind_method(D_METHOD("squash"), &Mob::squash);
+    ADD_SIGNAL(MethodInfo("squash"));
 }
 
 Mob::Mob()
@@ -63,5 +65,11 @@ void Mob::initialize(Vector3 p_start_position, Vector3 p_player_position)
 
 void Mob::on_visibility_notifier_screen_exited()
 {
+    queue_free();
+}
+
+void Mob::squash()
+{
+    emit_signal("squash");
     queue_free();
 }

@@ -7,6 +7,7 @@
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/node3d.hpp>
 #include <godot_cpp/variant/basis.hpp>
+#include "mob.h"
 
 namespace godot
 {
@@ -16,11 +17,12 @@ namespace godot
         GDCLASS(Player, CharacterBody3D)
 
     private:
-        int m_speed, m_fall_acceleration, m_jump_impulse  ;
+        int m_speed, m_fall_acceleration, m_jump_impulse, m_bounce_impulse;
         Vector3 m_target_velocity, m_position;
         Input *m_input;
         Node3D *m_pivot;
         Basis *m_basis;
+        Mob *m_mob;
 
     protected:
         static void _bind_methods();
@@ -36,6 +38,8 @@ namespace godot
         int get_fall_acceleration() const;
         void set_jump_impulse(const int &p_jump_impulse);
         int get_jump_impulse() const;
+        void set_bounce_impulse(const int &p_bounce_impulse);
+        int get_bounce_impulse() const;
     };
 }
 

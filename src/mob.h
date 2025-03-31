@@ -27,6 +27,7 @@ namespace godot
         int get_max_speed() const;
         void initialize(Vector3 p_start_position, Vector3 p_player_position);
         void on_visibility_notifier_screen_exited();
+        void squash();
     };
 }
 

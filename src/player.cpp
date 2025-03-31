@@ -1,5 +1,9 @@
 #include "player.h"
 #include <godot_cpp/core/class_db.hpp>
+#include <godot_cpp/classes/kinematic_collision3d.hpp>
+#include <godot_cpp/classes/character_body3d.hpp>
+#include <godot_cpp/classes/object.hpp>
+#include <godot_cpp/classes/node.hpp>
 
 using namespace godot;
 
@@ -14,6 +18,9 @@ void Player::_bind_methods()
     ClassDB::bind_method(D_METHOD("set_jump_impulse", "jump_impulse"), &Player::set_jump_impulse);
     ClassDB::bind_method(D_METHOD("get_jump_impulse"), &Player::get_jump_impulse);
     ADD_PROPERTY(PropertyInfo(Variant::INT, "jump_impulse"), "set_jump_impulse", "get_jump_impulse");
+    ClassDB::bind_method(D_METHOD("set_bounce_impulse", "bounce_impulse"), &Player::set_bounce_impulse);
+    ClassDB::bind_method(D_METHOD("get_bounce_impulse"), &Player::get_bounce_impulse);
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "bounce_impulse"), "set_bounce_impulse", "get_bounce_impulse");
 }
 
 Player::Player()
@@ -21,6 +28,7 @@ Player::Player()
     m_speed = 14;
     m_fall_acceleration = 75;
     m_jump_impulse = 20;
+    m_bounce_impulse = 16;
     m_target_velocity = Vector3(0, 0, 0);
     m_input = Input::get_singleton();
 }
@@ -70,6 +78,27 @@ void Player::_physics_process(double delta)
         m_target_velocity.y = m_jump_impulse;
     }
 
+    for (int index = 0; index < get_slide_collision_count(); index++)
+    {
+        Ref<KinematicCollision3D> collision = get_slide_collision(index);
+        Object *collider = collision->get_collider();
+        if (collider == nullptr)
+        {
+            continue;
+        }
+
+        if (cast_to<Node>(collider)->is_in_group("mob"))
+        {
+            m_mob = cast_to<Mob>(collider);
+            if (Vector3(0, 1, 0).dot(collision->get_normal()) > 0.1f)
+            {
+                m_mob->squash();
+                m_target_velocity.y = m_bounce_impulse;
+                break;
+            }
+        }
+    }
+
     set_velocity(m_target_velocity);
     move_and_slide();
 }
@@ -107,4 +136,14 @@ void Player::set_jump_impulse(const int &p_jump_impulse)
 int Player::get_jump_impulse() const
 {
     return m_jump_impulse;
+}
+
+void Player::set_bounce_impulse(const int &p_bounce_impulse)
+{
+    m_bounce_impulse = p_bounce_impulse;
+}
+
+int Player::get_bounce_impulse() const
+{
+    return m_bounce_impulse;
 }
