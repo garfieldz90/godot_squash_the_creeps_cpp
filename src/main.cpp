@@ -18,6 +18,7 @@ void Main::_ready()
     m_mob_timer = get_node<Timer>("MobTimer");
     m_mob_timer->connect("timeout", Callable(this, "on_mob_timer_timeout"), CONNECT_PERSIST);
     m_player = get_node<Player>("Player");
+    m_player->connect("hit", Callable(this, "hit"), CONNECT_PERSIST);
 }
 
 void Main::set_mob_scene(const Ref<PackedScene> &p_mob_scene)
@@ -41,4 +42,9 @@ void Main::on_mob_timer_timeout()
     add_child(mob);
     memdelete(rnd);
     rnd = nullptr;
+}
+
+void Main::on_player_hit()
+{
+    m_mob_timer->stop();
 }

@@ -1,9 +1,7 @@
 #include "player.h"
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/classes/kinematic_collision3d.hpp>
-#include <godot_cpp/classes/character_body3d.hpp>
 #include <godot_cpp/classes/object.hpp>
-#include <godot_cpp/classes/node.hpp>
 
 using namespace godot;
 
@@ -21,6 +19,9 @@ void Player::_bind_methods()
     ClassDB::bind_method(D_METHOD("set_bounce_impulse", "bounce_impulse"), &Player::set_bounce_impulse);
     ClassDB::bind_method(D_METHOD("get_bounce_impulse"), &Player::get_bounce_impulse);
     ADD_PROPERTY(PropertyInfo(Variant::INT, "bounce_impulse"), "set_bounce_impulse", "get_bounce_impulse");
+    ClassDB::bind_method(D_METHOD("die"), &Player::die);
+    ClassDB::bind_method(D_METHOD("on_mob_detector_body_entered"), &Player::on_mob_detector_body_entered);
+    ADD_SIGNAL(MethodInfo("hit"));
 }
 
 Player::Player()
@@ -62,7 +63,7 @@ void Player::_physics_process(double delta)
     if (direction != Vector3(0, 0, 0))
     {
         direction = direction.normalized();
-        m_pivot->set_basis(Basis::looking_at(direction));
+        m_pivot->look_at(m_position + direction), Vector3(0, 1, 0);
     }
 
     m_target_velocity.x = direction.x * m_speed;
@@ -106,6 +107,8 @@ void Player::_physics_process(double delta)
 void Player::_ready()
 {
     m_pivot = get_node<Node3D>("Pivot");
+    m_mob_detector = get_node<Area3D>("MobDetector");
+    m_mob_detector->connect("body_entered", Callable(this, "on_mob_detector_body_entered"), CONNECT_PERSIST);
 }
 
 void Player::set_speed(const int &p_speed)
@@ -146,4 +149,15 @@ void Player::set_bounce_impulse(const int &p_bounce_impulse)
 int Player::get_bounce_impulse() const
 {
     return m_bounce_impulse;
+}
+
+void Player::die()
+{
+    emit_signal("hit");
+    queue_free();
+}
+
+void Player::on_mob_detector_body_entered(Mob *p_mob)
+{
+    die();
 }

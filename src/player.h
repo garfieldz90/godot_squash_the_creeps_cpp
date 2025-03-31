@@ -8,6 +8,9 @@
 #include <godot_cpp/classes/node3d.hpp>
 #include <godot_cpp/variant/basis.hpp>
 #include "mob.h"
+#include <godot_cpp/classes/area3d.hpp>
+#include <godot_cpp/classes/node.hpp>
+
 
 namespace godot
 {
@@ -23,6 +26,7 @@ namespace godot
         Node3D *m_pivot;
         Basis *m_basis;
         Mob *m_mob;
+        Area3D *m_mob_detector;
 
     protected:
         static void _bind_methods();
@@ -40,6 +44,8 @@ namespace godot
         int get_jump_impulse() const;
         void set_bounce_impulse(const int &p_bounce_impulse);
         int get_bounce_impulse() const;
+        void die();
+        void on_mob_detector_body_entered(Mob *p_mob);
     };
 }
 

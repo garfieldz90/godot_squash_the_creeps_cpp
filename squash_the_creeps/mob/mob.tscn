@@ -3,7 +3,7 @@
 [ext_resource type="PackedScene" uid="uid://bpcvr5gdkqphg" path="res://art/mob.glb" id="1_7b8ug"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6jlfs"]
-radius = 0.7
+radius = 1.24172
 
 [node name="Mob" type="Mob" groups=["mob"]]
 collision_layer = 2

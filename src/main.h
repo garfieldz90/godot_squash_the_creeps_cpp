@@ -28,6 +28,7 @@ namespace godot
         void set_mob_scene(const Ref<PackedScene> &p_mob_scene);
         Ref<PackedScene> get_mob_scene() const;
         void on_mob_timer_timeout();
+        void on_player_hit();
     };
 }
 
