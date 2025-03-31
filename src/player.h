@@ -16,7 +16,7 @@ namespace godot
         GDCLASS(Player, CharacterBody3D)
 
     private:
-        int m_speed, m_fall_acceleration;
+        int m_speed, m_fall_acceleration, m_jump_impulse  ;
         Vector3 m_target_velocity, m_position;
         Input *m_input;
         Node3D *m_pivot;
@@ -34,6 +34,8 @@ namespace godot
         int get_speed() const;
         void set_fall_acceleration(const int &p_fall_acceleration);
         int get_fall_acceleration() const;
+        void set_jump_impulse(const int &p_jump_impulse);
+        int get_jump_impulse() const;
     };
 }
 

@@ -16,8 +16,8 @@ void Mob::_bind_methods()
 
 Mob::Mob()
 {
-    m_min_speed = 0;
-    m_max_speed = 0;
+    m_min_speed = 10;
+    m_max_speed = 18;
 }
 Mob::~Mob()
 {
