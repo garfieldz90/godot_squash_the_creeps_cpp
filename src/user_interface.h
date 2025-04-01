@@ -19,6 +19,9 @@ namespace godot
 
     public:
         void _ready() override;
+        void add_score();
+        UserInterface();
+        ~UserInterface();
     };
 }
 

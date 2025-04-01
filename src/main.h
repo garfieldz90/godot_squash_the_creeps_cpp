@@ -7,6 +7,8 @@
 #include <godot_cpp/classes/timer.hpp>
 #include "player.h"
 #include "mob.h"
+#include "user_interface.h"
+#include <godot_cpp/classes/color_rect.hpp>
 
 namespace godot
 {
@@ -19,6 +21,8 @@ namespace godot
         Ref<PackedScene> m_mob_scene;
         Timer *m_mob_timer;
         Player *m_player;
+        UserInterface *m_ui;
+        ColorRect *m_retry;
 
     protected:
         static void _bind_methods();
@@ -29,6 +33,7 @@ namespace godot
         Ref<PackedScene> get_mob_scene() const;
         void on_mob_timer_timeout();
         void on_player_hit();
+        void on_mob_squash();
     };
 }
 

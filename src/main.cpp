@@ -11,6 +11,7 @@ void Main::_bind_methods()
     ClassDB::bind_method(D_METHOD("get_mob_scene"), &Main::get_mob_scene);
     ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "mob_scene", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_mob_scene", "get_mob_scene");
     ClassDB::bind_method(D_METHOD("on_mob_timer_timeout"), &Main::on_mob_timer_timeout);
+    ClassDB::bind_method(D_METHOD("on_mob_squash"), &Main::on_mob_squash);
 }
 
 void Main::_ready()
@@ -18,7 +19,11 @@ void Main::_ready()
     m_mob_timer = get_node<Timer>("MobTimer");
     m_mob_timer->connect("timeout", Callable(this, "on_mob_timer_timeout"), CONNECT_PERSIST);
     m_player = get_node<Player>("Player");
-    m_player->connect("hit", Callable(this, "hit"), CONNECT_PERSIST);
+    m_player->connect("hit", Callable(this, "on_player_hit"), CONNECT_PERSIST);
+    m_ui = get_node<UserInterface>("UserInterface");
+    m_player->connect("squash_creep", Callable(this, "on_mob_squash"), CONNECT_PERSIST);
+    m_retry = get_node<ColorRect>(NodePath("UserInterface/Retry"));
+    m_retry->hide();
 }
 
 void Main::set_mob_scene(const Ref<PackedScene> &p_mob_scene)
@@ -50,4 +55,9 @@ void Main::on_mob_timer_timeout()
 void Main::on_player_hit()
 {
     m_mob_timer->stop();
+}
+
+void Main::on_mob_squash()
+{
+    m_ui->add_score();
 }

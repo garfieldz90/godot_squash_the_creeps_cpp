@@ -22,6 +22,7 @@ void Player::_bind_methods()
     ClassDB::bind_method(D_METHOD("die"), &Player::die);
     ClassDB::bind_method(D_METHOD("on_mob_detector_body_entered"), &Player::on_mob_detector_body_entered);
     ADD_SIGNAL(MethodInfo("hit"));
+    ADD_SIGNAL(MethodInfo("squash_creep"));
 }
 
 Player::Player()
@@ -94,6 +95,7 @@ void Player::_physics_process(double delta)
             if (Vector3(0, 1, 0).dot(collision->get_normal()) > 0.1f)
             {
                 m_mob->squash();
+                emit_signal("squash_creep");
                 m_target_velocity.y = m_bounce_impulse;
                 break;
             }
