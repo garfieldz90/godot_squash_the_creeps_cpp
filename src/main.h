@@ -9,6 +9,7 @@
 #include "mob.h"
 #include "user_interface.h"
 #include <godot_cpp/classes/color_rect.hpp>
+#include <godot_cpp/classes/input_event.hpp>
 
 namespace godot
 {
@@ -34,6 +35,7 @@ namespace godot
         void on_mob_timer_timeout();
         void on_player_hit();
         void on_mob_squash();
+        void _unhandled_input(const Ref<InputEvent> &p_event) override;
     };
 }
 

@@ -2,6 +2,8 @@
 #include <godot_cpp/core/class_db.hpp>
 #include <godot_cpp/classes/random_number_generator.hpp>
 #include <godot_cpp/classes/path_follow3d.hpp>
+#include <godot_cpp/classes/input_event.hpp>
+#include <godot_cpp/classes/scene_tree.hpp>
 
 using namespace godot;
 
@@ -12,6 +14,7 @@ void Main::_bind_methods()
     ADD_PROPERTY(PropertyInfo(Variant::OBJECT, "mob_scene", PROPERTY_HINT_RESOURCE_TYPE, "PackedScene"), "set_mob_scene", "get_mob_scene");
     ClassDB::bind_method(D_METHOD("on_mob_timer_timeout"), &Main::on_mob_timer_timeout);
     ClassDB::bind_method(D_METHOD("on_mob_squash"), &Main::on_mob_squash);
+    ClassDB::bind_method(D_METHOD("on_player_hit"), &Main::on_player_hit);
 }
 
 void Main::_ready()
@@ -38,8 +41,8 @@ Ref<PackedScene> Main::get_mob_scene() const
 
 void Main::on_mob_timer_timeout()
 {
-    if (!m_player->is_queued_for_deletion())
-    {
+    // if (!m_player->is_queued_for_deletion())
+    // {
         RandomNumberGenerator *rnd = memnew(RandomNumberGenerator);
         Mob *mob = cast_to<Mob>(m_mob_scene->instantiate());
         PathFollow3D *mob_spawn_location = cast_to<PathFollow3D>(get_node_or_null("SpawnPath/SpawnLocation"));
@@ -49,15 +52,24 @@ void Main::on_mob_timer_timeout()
         add_child(mob);
         memdelete(rnd);
         rnd = nullptr;
-    }
+    // }
 }
 
 void Main::on_player_hit()
 {
     m_mob_timer->stop();
+    m_retry->show();
 }
 
 void Main::on_mob_squash()
 {
     m_ui->add_score();
+}
+
+void Main::_unhandled_input(const Ref<InputEvent> &p_event)
+{
+    if (p_event->is_action_pressed("ui_accept") && m_retry->is_visible())
+    {
+        get_tree()->reload_current_scene();
+    }
 }
