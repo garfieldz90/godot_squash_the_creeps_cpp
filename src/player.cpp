@@ -39,10 +39,9 @@ Player::~Player()
 }
 
 void Player::_physics_process(double delta)
-{
+{ 
     Vector3 direction = Vector3(0, 0, 0);
-    if (is_visible())
-        m_position = get_position();
+    m_position = get_position();
 
     if (m_input->is_action_pressed("move_right"))
     {
@@ -64,7 +63,7 @@ void Player::_physics_process(double delta)
     if (direction != Vector3(0, 0, 0))
     {
         direction = direction.normalized();
-        m_pivot->look_at(m_position + direction), Vector3(0, 1, 0);
+        m_pivot->look_at(m_position + direction, Vector3(0, 1, 0));
     }
 
     m_target_velocity.x = direction.x * m_speed;

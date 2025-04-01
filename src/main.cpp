@@ -33,15 +33,18 @@ Ref<PackedScene> Main::get_mob_scene() const
 
 void Main::on_mob_timer_timeout()
 {
-    RandomNumberGenerator *rnd = memnew(RandomNumberGenerator);
-    Mob *mob = cast_to<Mob>(m_mob_scene->instantiate());
-    PathFollow3D *mob_spawn_location = cast_to<PathFollow3D>(get_node_or_null("SpawnPath/SpawnLocation"));
-    mob_spawn_location->set_progress_ratio(rnd->randf());
-    Vector3 player_position = m_player->get_position();
-    mob->initialize(mob_spawn_location->get_position(), player_position);
-    add_child(mob);
-    memdelete(rnd);
-    rnd = nullptr;
+    if (!m_player->is_queued_for_deletion())
+    {
+        RandomNumberGenerator *rnd = memnew(RandomNumberGenerator);
+        Mob *mob = cast_to<Mob>(m_mob_scene->instantiate());
+        PathFollow3D *mob_spawn_location = cast_to<PathFollow3D>(get_node_or_null("SpawnPath/SpawnLocation"));
+        mob_spawn_location->set_progress_ratio(rnd->randf());
+        Vector3 player_position = m_player->get_position();
+        mob->initialize(mob_spawn_location->get_position(), player_position);
+        add_child(mob);
+        memdelete(rnd);
+        rnd = nullptr;
+    }
 }
 
 void Main::on_player_hit()

@@ -6,6 +6,7 @@
 #include <gdextension_interface.h>
 #include <godot_cpp/core/defs.hpp>
 #include <godot_cpp/godot.hpp>
+#include "user_interface.h"
 
 using namespace godot;
 
@@ -17,6 +18,7 @@ void initialize_example_module(ModuleInitializationLevel p_level) {
 	GDREGISTER_RUNTIME_CLASS(Player);
 	GDREGISTER_RUNTIME_CLASS(Main);
 	GDREGISTER_RUNTIME_CLASS(Mob);
+	GDREGISTER_RUNTIME_CLASS(UserInterface);
 }
 
 void uninitialize_example_module(ModuleInitializationLevel p_level) {
