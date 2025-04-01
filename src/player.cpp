@@ -41,7 +41,8 @@ Player::~Player()
 void Player::_physics_process(double delta)
 {
     Vector3 direction = Vector3(0, 0, 0);
-    m_position = get_position();
+    if (is_visible())
+        m_position = get_position();
 
     if (m_input->is_action_pressed("move_right"))
     {
