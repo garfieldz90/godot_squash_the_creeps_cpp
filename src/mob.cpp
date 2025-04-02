@@ -61,6 +61,7 @@ void Mob::initialize(Vector3 p_start_position, Vector3 p_player_position)
     set_velocity(velocity);
     memdelete(rnd);
     rnd = nullptr;
+    // m_animation_player->set_speed_scale(4.0f);
 }
 
 void Mob::on_visibility_notifier_screen_exited()
@@ -72,4 +73,9 @@ void Mob::squash()
 {
     emit_signal("squash");
     queue_free();
+}
+
+void Mob::_ready()
+{
+    m_animation_player = get_node<AnimationPlayer>("AnimationPlayer");
 }

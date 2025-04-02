@@ -4,6 +4,7 @@
 #include <godot_cpp/godot.hpp>
 #include <godot_cpp/classes/character_body3d.hpp>
 #include <godot_cpp/variant/vector3.hpp>
+#include <godot_cpp/classes/animation_player.hpp>
 
 namespace godot
 {
@@ -13,6 +14,7 @@ namespace godot
 
     private:
         int m_min_speed, m_max_speed;
+        AnimationPlayer *m_animation_player;
 
     protected:
         static void _bind_methods();
@@ -28,6 +30,7 @@ namespace godot
         void initialize(Vector3 p_start_position, Vector3 p_player_position);
         void on_visibility_notifier_screen_exited();
         void squash();
+        void _ready() override;
     };
 }
 

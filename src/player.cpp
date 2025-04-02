@@ -40,7 +40,7 @@ Player::~Player()
 }
 
 void Player::_physics_process(double delta)
-{ 
+{
     Vector3 direction = Vector3(0, 0, 0);
     m_position = get_position();
 
@@ -65,6 +65,11 @@ void Player::_physics_process(double delta)
     {
         direction = direction.normalized();
         m_pivot->look_at(m_position + direction, Vector3(0, 1, 0));
+        m_animation_player->set_speed_scale(4.0f);
+    }
+    else
+    {
+        m_animation_player->set_speed_scale(1.0f);
     }
 
     m_target_velocity.x = direction.x * m_speed;
@@ -104,6 +109,8 @@ void Player::_physics_process(double delta)
 
     set_velocity(m_target_velocity);
     move_and_slide();
+
+    // m_pivot->rotate_x(M_PI / 6 * get_velocity().y / m_jump_impulse);
 }
 
 void Player::_ready()
@@ -111,6 +118,7 @@ void Player::_ready()
     m_pivot = get_node<Node3D>("Pivot");
     m_mob_detector = get_node<Area3D>("MobDetector");
     m_mob_detector->connect("body_entered", Callable(this, "on_mob_detector_body_entered"), CONNECT_PERSIST);
+    m_animation_player = get_node<AnimationPlayer>("AnimationPlayer");
 }
 
 void Player::set_speed(const int &p_speed)

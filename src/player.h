@@ -10,6 +10,7 @@
 #include "mob.h"
 #include <godot_cpp/classes/area3d.hpp>
 #include <godot_cpp/classes/node.hpp>
+#include <godot_cpp/classes/animation_player.hpp>
 
 
 namespace godot
@@ -27,6 +28,7 @@ namespace godot
         Basis *m_basis;
         Mob *m_mob;
         Area3D *m_mob_detector;
+        AnimationPlayer *m_animation_player;
 
     protected:
         static void _bind_methods();

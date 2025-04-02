@@ -1,9 +1,43 @@
-[gd_scene load_steps=3 format=3 uid="uid://cpcw44mmgb6fw"]
+[gd_scene load_steps=5 format=3 uid="uid://cpcw44mmgb6fw"]
 
 [ext_resource type="PackedScene" uid="uid://bpcvr5gdkqphg" path="res://art/mob.glb" id="1_7b8ug"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_6jlfs"]
 radius = 1.24172
+
+[sub_resource type="Animation" id="Animation_7b8ug"]
+resource_name = "float"
+length = 1.2
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/Character:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.3, 0.7, 1.2),
+"transitions": PackedFloat32Array(0.420448, 0.450625, 2.14355),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.65, 0), Vector3(0, 0.35, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Pivot/Character:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.1, 0.5, 1.2),
+"transitions": PackedFloat32Array(0.420448, 0.450625, 2.14355),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0.139626, 0, 0), Vector3(-0.15708, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6jlfs"]
+_data = {
+&"float": SubResource("Animation_7b8ug")
+}
 
 [node name="Mob" type="Mob" groups=["mob"]]
 collision_layer = 2
@@ -12,6 +46,7 @@ collision_mask = 4
 [node name="Pivot" type="Node3D" parent="."]
 
 [node name="Character" parent="Pivot" instance=ExtResource("1_7b8ug")]
+transform = Transform3D(1, 0, 0, 0, 0.987688, 0.156435, 0, -0.156435, 0.987688, 0, 0.35, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.414963, 0)
@@ -19,3 +54,9 @@ shape = SubResource("SphereShape3D_6jlfs")
 
 [node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
 aabb = AABB(-1.18993, -1, -1.94065, 2.37985, 2, 3.88129)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_6jlfs")
+}
+autoplay = "float"
